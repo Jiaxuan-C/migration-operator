@@ -1,0 +1,33 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - migration.bupt.cjx
+  resources:
+  - migrators
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - migration.bupt.cjx
+  resources:
+  - migrators/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - migration.bupt.cjx
+  resources:
+  - migrators/status
+  verbs:
+  - get
+  - patch
+  - update

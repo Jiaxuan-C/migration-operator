@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="ba2212a8-b74e-4637-8a13-71b4a87adc91" name="migrator" url="http://192.168.44.60">
+        <fileTransfer rootFolder="/home/root1" accessType="SFTP" host="192.168.44.60" port="22" sshConfigId="45824c71-4eb2-45c8-91e5-a54caf5fc37b" sshConfig="root1@192.168.44.60:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

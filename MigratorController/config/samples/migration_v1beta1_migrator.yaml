@@ -1,0 +1,53 @@
+apiVersion: migration.bupt.cjx/v1beta1
+kind: Migrator
+metadata:
+  labels:
+    app.kubernetes.io/name: migrator
+    app.kubernetes.io/instance: migrator-sample
+    app.kubernetes.io/part-of: migratorcontroller
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: migratorcontroller
+  name: migrator-sample
+spec:
+#  targetNode: ""
+#  migrationTrigger: false
+#  template:
+#    spec:
+#      containers:
+#        - name: nginx
+#          image: nginx:alpine
+#          ports:
+#            - containerPort: 80
+#
+  targetNode: ""
+  migrationTrigger: false
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: pod-yace
+          command:
+            - sh
+            - -c
+            - 'i=0; while true; do echo $i; i=$(expr $i + 1); sleep 1; done'
+          image: busybox
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "1"
+#        - name: pod-yace2
+#          command:
+#            - sh
+#            - -c
+#            - 'i=0; while true; do echo $i; i=$(expr $i + 1); sleep 1; done'
+#          image: busybox
+#          resources:
+#            requests:
+#              memory: "64Mi"
+#              cpu: "250m"
+#            limits:
+#              memory: "1024Mi"
+#              cpu: "1"

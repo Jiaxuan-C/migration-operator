@@ -1,0 +1,27 @@
+# permissions for end users to view migrators.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: migrator-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: migratorcontroller
+    app.kubernetes.io/part-of: migratorcontroller
+    app.kubernetes.io/managed-by: kustomize
+  name: migrator-viewer-role
+rules:
+- apiGroups:
+  - migration.bupt.cjx
+  resources:
+  - migrators
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - migration.bupt.cjx
+  resources:
+  - migrators/status
+  verbs:
+  - get
