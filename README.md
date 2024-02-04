@@ -6,6 +6,7 @@ env:
 ​    Runtime Version: 1.7.0
 ​    Ubuntu 22.04
 ​    cgroup version: v1!!!(very important)
+    go version: go1.19.1 linux/amd64
 ```
 
 Modified kubelet source code: https://github.com/Jiaxuan-C/kubernetes-1.26.0-migration/tree/master
