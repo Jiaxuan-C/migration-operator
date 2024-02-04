@@ -11,4 +11,5 @@ env:
 Modified kubelet source code: https://github.com/Jiaxuan-C/kubernetes-1.26.0-migration/tree/master
 
 Modified containerd source code: https://github.com/Jiaxuan-C/containerd-1.7.0-migration/tree/master
-![https://github.com/Jiaxuan-C/migration-operator/blob/main/demo.gif]
+
+![image](https://github.com/Jiaxuan-C/migration-operator/blob/main/demo.gif)
