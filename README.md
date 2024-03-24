@@ -1,5 +1,5 @@
 # 〇、声明
-**如果您仅想了解本项目在干什么，请参考*第二部分*内容并观看视频即可 https://www.bilibili.com/video/BV1nA4m1P7w1/?vd_source=f5d12b3894e2c1a98b31ea20b7fb0c88**
+**如果您仅想快速了解本项目在干什么，请参考*第二部分*内容并观看视频即可 https://www.bilibili.com/video/BV1nA4m1P7w1/?vd_source=f5d12b3894e2c1a98b31ea20b7fb0c88**
 **如果您想进一步了解本项目的架构、思想以及改进请阅读下文**
 
 # 一、前言(这不重要，可以直接看第四部分的效果演示)
