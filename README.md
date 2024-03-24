@@ -1,3 +1,6 @@
+# README.md
+- en [English](readme/README.zh_CN.md)
+- zh_CN [简体中文](README.md)
 ```
 env: 
 ​    1 master and 2 work nodes
