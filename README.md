@@ -60,7 +60,7 @@ env:
 1. 看我这一大坨GIF，它就在下面。 
 2. **看我幽默、风趣、详细、激情......的b站视频（没事，不用给视频点赞）**：https://www.bilibili.com/video/BV1nA4m1P7w1/?vd_source=f5d12b3894e2c1a98b31ea20b7fb0c88
 
-![image](./demo.gif)
+![image](demo.gif)
 
 # 五、架构设计及原理概要
 
