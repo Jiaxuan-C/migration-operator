@@ -66,7 +66,7 @@ env:
 
 ## 1. 架构设计概要
 
-**<img src="https://github.com/Jiaxuan-C/migration-operator/blob/main/README.assets/image-20240324174628523.png" alt="image-20240324174628523" style="zoom: 80%;" />**
+![image-20240324201105420](README.assets/image-20240324204629679.png)
 
 1. 顶层是一个基于Kubebuilder构建的的k8s operator，一个CRD，用于控制整个迁移的生命周期，什么时候触发迁移，迁移到哪。
 
@@ -92,7 +92,7 @@ env:
 
 ## 2. 迁移原理概要
 
-<img src="https://github.com/Jiaxuan-C/migration-operator/blob/main/README.assets/image-20240324175309358.png" alt="image-20240324175309358" style="zoom:80%;" />
+![image-20240324201105420](README.assets/image-20240324204645181.png)
 
 这里我不多说了嗷，直接上图，精髓就是先创建**"躯壳"**，后复制**"灵魂"**。
 
