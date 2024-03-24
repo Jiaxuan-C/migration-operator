@@ -30,7 +30,7 @@ env:
 
 注意了，这有个大坑，当时卡了我一个月，cgroup version一定要使用v1！还好当时在Github上联系到了 Adrian Reber大佬。此处附上当时的对话和一些问题细节，具体的对话可以到https://github.com/kubernetes/enhancements/issues/2008 找，不过太久了，估计被hidden了，需要手动展开（当时我Github就叫qiubabimunieniu，后来需要在论文中公开github地址，我就改名了。。。）：
 
-![image-20240324201105420](README.assets/image-20240324201105420.png)
+![image-20240324201105420](README.assets/image-20240324204629679.png)
 
 
 除了准备上述Kubernetes集群环境外，你还需要自己编译我修改过的Kubelet和Containerd的源码：
