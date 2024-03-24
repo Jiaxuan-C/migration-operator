@@ -1,18 +1,17 @@
 # 一、前言(这不重要，可以直接看第四部分的效果演示)
 
-​		Kubernetes平台对于无状态的应用有着很完善的管理能力，但对于有状态应用的维护仍是其薄弱之处(即使它拥有强劲的StatefulSet控制器)。当集群中的物理节点出现宕机、需要维护或因资源紧缺而驱逐Pod时，这些Pod往往会在其它节点上重启，丢失原有状态，这对于需要长期运行且有状态的工作负载是十分不利的，如HPC(High performance computing)类，最糟糕的结果是完全丢失几个小时、几天的计算数据。对此，最好是在物理节点发生意外前感知、并迁移这些有状态的应用，但一直以来Kubernetes并没有支持该项功能，直到2023年1月底，Kubernetes社区接受了一项容器Checkpoint的提案，截止至今，最新版本的Kubernetes中已支持相关功能的测试版本，但Kubernetes尚未给出容器Restore的方案。与此同时也有很多开发者对Kubernetes进行二次开发，以支持其个性化的Pod的迁移需求。此外，在2022年发布的1.24版本的Kubernetes中宣布正式弃用Dockershim，使用Containerd作为其默认的容器运行时，所以本项目首选关注Kubernetes和Containerd的集成。
+Kubernetes平台对于无状态的应用有着很完善的管理能力，但对于有状态应用的维护仍是其薄弱之处(即使它拥有强劲的StatefulSet控制器)。当集群中的物理节点出现宕机、需要维护或因资源紧缺而驱逐Pod时，这些Pod往往会在其它节点上重启，丢失原有状态，这对于需要长期运行且有状态的工作负载是十分不利的，如HPC(High performance computing)类，最糟糕的结果是完全丢失几个小时、几天的计算数据。对此，最好是在物理节点发生意外前感知、并迁移这些有状态的应用，但一直以来Kubernetes并没有支持该项功能，直到2023年1月底，Kubernetes社区接受了一项容器Checkpoint的提案，截止至今，最新版本的Kubernetes中已支持相关功能的测试版本，但Kubernetes尚未给出容器Restore的方案。与此同时也有很多开发者对Kubernetes进行二次开发，以支持其个性化的Pod的迁移需求。此外，在2022年发布的1.24版本的Kubernetes中宣布正式弃用Dockershim，使用Containerd作为其默认的容器运行时，所以本项目首选关注Kubernetes和Containerd的集成。
 
-​		目前官方开源社区现在有一个Redhat的团队，叫Adrian Reber的大佬带队一直在致力于给k8s添加checkpoint的功能，但仅是checkpoint。那对于迁移来讲，即要有Checkpoint 还要有Restore，何况我们要求的是**热迁移**；对Adrian Reber项目感兴趣的可以去看这个issue：https://github.com/kubernetes/enhancements/issues/2008，或者去Google搜这个大佬，可以看到他们的技术分享。
+目前官方开源社区现在有一个Redhat的团队，叫Adrian Reber的大佬带队一直在致力于给k8s添加checkpoint的功能，但仅是checkpoint。那对于迁移来讲，即要有Checkpoint 还要有Restore，何况我们要求的是**热迁移**；对Adrian Reber项目感兴趣的可以去看这个issue：https://github.com/kubernetes/enhancements/issues/2008，或者去Google搜这个大佬，可以看到他们的技术分享。
 
 # 二、基本功能介绍
+本项目在k8s平台上，基于Pre-Copy技术，实现了对**有状态**的Pod的**热迁移**；为了进一步降低被迁移应用的**停机时间**，本项目还对容器的文件系统同步过程做了些文章，后面有详细介绍。
 
-​		本项目在k8s平台上，基于Pre-Copy技术，实现了对**有状态**的Pod的**热迁移**；为了进一步降低被迁移应用的**停机时间**，本项目还对容器的文件系统同步过程做了些文章，后面有详细介绍。
+目前网络资源中有朋友**混淆热迁移的概念**，热迁移的**停机时间(Downtime)**是远小于冷迁移的。我曾在网上看到这样的贴子“基于Docker实现的热迁移方案”，里面介绍了使用docker的Checkpoint和Restore命令实现的有状态容器迁移，但很显然，**简单的C/R仅仅是冷迁移**，这根本不叫热迁移。
 
-​		目前网络资源中有朋友**混淆热迁移的概念**，热迁移的**停机时间(Downtime)**是远小于冷迁移的。我曾在网上看到这样的贴子“基于Docker实现的热迁移方案”，里面介绍了使用docker的Checkpoint和Restore命令实现的有状态容器迁移，但很显然，**简单的C/R仅仅是冷迁移**，这根本不叫热迁移。
+​好了，到这儿来说懂的估计也知道我在干嘛了，不懂的朋友不用急，**请直接看第四部分效果演示**，看完就知道我在干嘛了。
 
-​		好了，到这儿来说懂的估计也知道我在干嘛了，不懂的朋友不用急，**请直接看第四部分效果演示**，看完就知道我在干嘛了。
-
-​		其实我之前在微信的黄大年公众号看到了华为提的云计算项目需求之一就有这个Pod热迁移的项目，好像还搞了个什么“招榜悬赏”的活动hhhh，当时想搞，奈何没有团队，实验室组里也只有我自己在搞这个迁移方向。
+其实我之前在微信的黄大年公众号看到了华为提的云计算项目需求之一就有这个Pod热迁移的项目，好像还搞了个什么“招榜悬赏”的活动hhhh，当时想搞，奈何没有团队，实验室组里也只有我自己在搞这个迁移方向。
 
 # 三、快速启动(其实麻烦的，建议叫龟速启动)
 
@@ -45,7 +44,7 @@ env:
 代码在这：https://github.com/Jiaxuan-C/kubernetes-1.26.0-migration/tree/master
 ```
 
-​		把它下载下来，只编译kubelet就行，不然巨慢。之前我的K8s中的kubelet是systemd管理的，所以需要你在work node上停掉你之前的kubelet服务，启动我们编译好的。
+​把它下载下来，只编译kubelet就行，不然巨慢。之前我的K8s中的kubelet是systemd管理的，所以需要你在work node上停掉你之前的kubelet服务，启动我们编译好的。
 
 ## 3. Containerd
 
@@ -53,7 +52,7 @@ env:
 代码在这：https://github.com/Jiaxuan-C/containerd-1.7.0-migration/tree/master
 ```
 
-​		额，把它下载下来，这个全编译，然后编译好的文件全丢到/user/local/bin，当然前提是你的containerd之前的环境变量就配置在这。你也可以像kubelet那样，不过我喜欢这么搞，毕竟它编译好了会出来一大坨bin文件。
+​额，把它下载下来，这个全编译，然后编译好的文件全丢到/user/local/bin，当然前提是你的containerd之前的环境变量就配置在这。你也可以像kubelet那样，不过我喜欢这么搞，毕竟它编译好了会出来一大坨bin文件。
 
 **好了你安装完了，去试试效果吧，具体怎么操作其实你还得看第四部分，嗨嗨嗨。**
 
