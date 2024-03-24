@@ -30,7 +30,7 @@ env:
 
 注意了，这有个大坑，当时卡了我一个月，cgroup version一定要使用v1！还好当时在Github上联系到了 Adrian Reber大佬。此处附上当时的对话和一些问题细节，具体的对话可以到https://github.com/kubernetes/enhancements/issues/2008找，不过太久了，估计被hidden了，需要手动展开（当时我Github就叫qiubabimunieniu，后来需要在论文中公开github地址，我就改名了。。。）：
 
-<img src="README.assets/image-20240324201105420.png" alt="image-20240324201105420" style="zoom:80%;" />
+<img src="https://github.com/Jiaxuan-C/migration-operator/blob/main/README.assets/image-20240324201105420.png" alt="image-20240324201105420" style="zoom:80%;" />
 
 
 
@@ -61,7 +61,7 @@ env:
 朋友们，给你们两个选择：
 
 1. 看我这一大坨GIF，它就在下面。 
-2. **看我幽默、风趣、详细、激情......的b站视频（没事，不用给视频点赞）：**https://www.bilibili.com/video/BV1nA4m1P7w1/?vd_source=f5d12b3894e2c1a98b31ea20b7fb0c88
+2. **看我幽默、风趣、详细、激情......的b站视频（没事，不用给视频点赞）**：https://www.bilibili.com/video/BV1nA4m1P7w1/?vd_source=f5d12b3894e2c1a98b31ea20b7fb0c88
 
 ![image](https://github.com/Jiaxuan-C/migration-operator/blob/main/demo.gif)
 
@@ -69,7 +69,7 @@ env:
 
 ## 1. 架构设计概要
 
-**<img src="README.assets/image-20240324174628523.png" alt="image-20240324174628523" style="zoom: 80%;" />**
+**<img src="https://github.com/Jiaxuan-C/migration-operator/blob/main/README.assets/image-20240324174628523.png" alt="image-20240324174628523" style="zoom: 80%;" />**
 
 1. 顶层是一个基于Kubebuilder构建的的k8s operator，一个CRD，用于控制整个迁移的生命周期，什么时候触发迁移，迁移到哪。
 
@@ -95,7 +95,7 @@ env:
 
 ## 2. 迁移原理概要
 
-<img src="README.assets/image-20240324175309358.png" alt="image-20240324175309358" style="zoom:80%;" />
+<img src="https://github.com/Jiaxuan-C/migration-operator/blob/main/README.assets/image-20240324175309358.png" alt="image-20240324175309358" style="zoom:80%;" />
 
 这里我不多说了嗷，直接上图，精髓就是先创建**"躯壳"**，后复制**"灵魂"**。
 
