@@ -2,7 +2,7 @@
 
 Kubernetes平台对于无状态的应用有着很完善的管理能力，但对于有状态应用的维护仍是其薄弱之处(即使它拥有强劲的StatefulSet控制器)。当集群中的物理节点出现宕机、需要维护或因资源紧缺而驱逐Pod时，这些Pod往往会在其它节点上重启，丢失原有状态，这对于需要长期运行且有状态的工作负载是十分不利的，如HPC(High performance computing)类，最糟糕的结果是完全丢失几个小时、几天的计算数据。对此，最好是在物理节点发生意外前感知、并迁移这些有状态的应用，但一直以来Kubernetes并没有支持该项功能，直到2023年1月底，Kubernetes社区接受了一项容器Checkpoint的提案，截止至今，最新版本的Kubernetes中已支持相关功能的测试版本，但Kubernetes尚未给出容器Restore的方案。与此同时也有很多开发者对Kubernetes进行二次开发，以支持其个性化的Pod的迁移需求。此外，在2022年发布的1.24版本的Kubernetes中宣布正式弃用Dockershim，使用Containerd作为其默认的容器运行时，所以本项目首选关注Kubernetes和Containerd的集成。
 
-目前官方开源社区现在有一个Redhat的团队，叫Adrian Reber的大佬带队一直在致力于给k8s添加checkpoint的功能，但仅是checkpoint。那对于迁移来讲，即要有Checkpoint 还要有Restore，何况我们要求的是**热迁移**；对Adrian Reber项目感兴趣的可以去看这个issue：https://github.com/kubernetes/enhancements/issues/2008，或者去Google搜这个大佬，可以看到他们的技术分享。
+目前官方开源社区现在有一个Redhat的团队，叫Adrian Reber的大佬带队一直在致力于给k8s添加checkpoint的功能，但仅是checkpoint。那对于迁移来讲，即要有Checkpoint 还要有Restore，何况我们要求的是**热迁移**；对Adrian Reber项目感兴趣的可以去看这个issue：https://github.com/kubernetes/enhancements/issues/2008 ，或者去Google搜这个大佬，可以看到他们的技术分享。
 
 # 二、基本功能介绍
 本项目在k8s平台上，基于Pre-Copy技术，实现了对**有状态**的Pod的**热迁移**；为了进一步降低被迁移应用的**停机时间**，本项目还对容器的文件系统同步过程做了些文章，后面有详细介绍。
