@@ -51,7 +51,7 @@ env:
 	go version: go1.19.1 linux/amd64
 ```
 
-注意了，这有个大坑，当时卡了我一个月，cgroup version一定要使用v1！还好当时在Github上联系到了 Adrian Reber大佬。此处附上当时的对话和一些问题细节，具体的对话可以到https://github.com/kubernetes/enhancements/issues/2008 找，不过太久了，估计被hidden了，需要手动展开（当时我Github就叫qiubabimunieniu，后来需要在论文中公开github地址，我就改名了。。。）：
+注意了，这有个大坑，当时卡了我一个月，cgroup version一定要使用v1！还好当时在Github上联系到了 Adrian Reber大佬，当时我发现自己的项目出现问题，然后就去复现 Adrian Reber团队的方案，结果他们的方案和我项目出现了相同的bug。。。此处附上当时的对话和一些问题细节，具体的对话可以到https://github.com/kubernetes/enhancements/issues/2008 找，不过太久了，估计被hidden了，需要手动展开（当时我Github就叫qiubabimunieniu，后来需要在论文中公开github地址，我就改名了。。。）：
 
 ![image-20240324201105420](README.assets/image-20240324204629679.png)
 
